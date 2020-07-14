@@ -3,15 +3,60 @@
 
 (def finn-url "https://www.finn.no/realestate/homes/search.html?filters=&location=0.20061")
 
-(defn get-new-today-count [map]
-  (let [new-today-map (filter
-                        #(= "Nye i dag"
-                            (-> %
-                                :content
-                                (nth 1)
-                                :content
-                                first))
-                        (html/select map [:div.input-toggle]))]
+(def scrape-tags ["Nye i dag"
+                  "Til salgs"
+                  "Solgt siste 3 dager"
+                  "Kommer for salg"
+                  "Brukt bolig"
+                  "Nybygg"
+                  "Leilighet"
+                  "Enebolig"
+                  "Tomannsbolig"
+                  "Rekkehus"
+                  "Prosjekt"
+                  "Garasje/Parkering"
+                  "Andre"
+                  "Aksje"
+                  "Andel"
+                  "Eier (Selveier)"
+                  "Megler"
+                  "Privat"
+                  "Oslo"
+                  "Bjerke"
+                  "Bygdøy - Frogner"
+                  "Bøler"
+                  "Ekeberg - Bekkelaget"
+                  "Furuset"
+                  "Gamle Oslo"
+                  "Grefsen - Kjelsås"
+                  "Grorud"
+                  "Grünerløkka - Sofienberg"
+                  "Hellerud"
+                  "Helsfyr - Sinsen"
+                  "Lambertseter"
+                  "Manglerud"
+                  "Nordstrand"
+                  "Romsås"
+                  "Røa"
+                  "Sagene - Torshov"
+                  "Sentrum"
+                  "Sogn"
+                  "Stovner"
+                  "St.Hanshaugen - Ullevål"
+                  "Søndre Nordstrand"
+                  "Ullern"
+                  "Uranienborg - Majorstuen"
+                  "Vinderen"
+                  "Østensjø"])
+
+(defn get-count-for-tag-str [map tag-str]
+  (let [new-today-map (filter #(= tag-str
+                                  (-> %
+                                      :content
+                                      (nth 1)
+                                      :content
+                                      first))
+                              map)]
     (-> new-today-map
         first
         :content
@@ -19,11 +64,15 @@
         :content
         (nth 3)
         :content
-        (nth 2))))
+        (nth 2)
+        (clojure.string/replace #" " "")
+        Integer/parseInt)))
 
 (defn -main
   [& args]
   (let [content (html/html-resource (java.net.URL. finn-url))
         all-div-input-toggle (html/select content [:div.input-toggle])
-        nye-i-dag (get-new-today-count all-div-input-toggle)]
-    (println nye-i-dag)))
+        ;nye-i-dag (get-count-for-tag-str all-div-input-toggle "Nye i dag")
+        ]
+    (doseq [tag scrape-tags]
+      (println (str tag " " (get-count-for-tag-str all-div-input-toggle tag))))))
