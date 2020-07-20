@@ -1,4 +1,5 @@
 (ns finn-bolig-statistikk.core
+  (:gen-class)
   (:require [net.cgrand.enlive-html :as html]))
 
 (def finn-url "https://www.finn.no/realestate/homes/search.html?filters=&location=0.20061")
@@ -49,30 +50,36 @@
                   "Vinderen"
                   "Østensjø"])
 
+(defn get-value-from-div-map [divmap]
+  (-> divmap
+      first
+      :content
+      (nth 1)
+      :content
+      (nth 3)
+      :content
+      (nth 2)
+      (clojure.string/replace #" " "")
+      Integer/parseInt))
+
+(defn get-tag-from-divmap [divmap]
+  (-> divmap
+      :content
+      (nth 1)
+      :content
+      first))
+
+(defn find-div-with-tag [div-maps tag]
+  (filter #(= tag (get-tag-from-divmap %)) div-maps))
+
 (defn get-count-for-tag-str [map tag-str]
-  (let [new-today-map (filter #(= tag-str
-                                  (-> %
-                                      :content
-                                      (nth 1)
-                                      :content
-                                      first))
-                              map)]
-    (-> new-today-map
-        first
-        :content
-        (nth 1)
-        :content
-        (nth 3)
-        :content
-        (nth 2)
-        (clojure.string/replace #" " "")
-        Integer/parseInt)))
+  (let [map-content (find-div-with-tag map tag-str)
+        tag-count (get-value-from-div-map map-content)]
+     tag-count))
 
 (defn -main
   [& args]
   (let [content (html/html-resource (java.net.URL. finn-url))
         all-div-input-toggle (html/select content [:div.input-toggle])
-        ;nye-i-dag (get-count-for-tag-str all-div-input-toggle "Nye i dag")
-        ]
-    (doseq [tag scrape-tags]
-      (println (str tag " " (get-count-for-tag-str all-div-input-toggle tag))))))
+        result (map #(get-count-for-tag-str all-div-input-toggle %) scrape-tags)]
+    (println (interpose "," result))))
