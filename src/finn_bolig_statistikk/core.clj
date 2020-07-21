@@ -81,5 +81,7 @@
   [& args]
   (let [content (html/html-resource (java.net.URL. finn-url))
         all-div-input-toggle (html/select content [:div.input-toggle])
-        result (map #(get-count-for-tag-str all-div-input-toggle %) scrape-tags)]
-    (println (interpose "," result))))
+        result (map #(get-count-for-tag-str all-div-input-toggle %) scrape-tags)
+        date-now (.format (java.text.SimpleDateFormat. "yyyy/MM/dd") (new java.util.Date))
+        result-with-date (concat [date-now] result)]
+    (println (interpose "," result-with-date))))
