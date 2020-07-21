@@ -1,4 +1,4 @@
-(defproject finn-bolig-statistikk "0.1.0-SNAPSHOT"
+(defproject finn-bolig-statistikk "0.1.0"
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [enlive "1.1.6"]]
 
