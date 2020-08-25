@@ -72,9 +72,10 @@
   (filter #(= tag (get-tag-from-divmap %)) div-maps))
 
 (defn get-count-for-tag-str [map tag-str]
-  (let [map-content (find-div-with-tag map tag-str)
-        tag-count (get-value-from-div-map map-content)]
-    tag-count))
+  (let [map-content (find-div-with-tag map tag-str)]
+    (if (> (count map-content) 0 )
+      (get-value-from-div-map map-content)
+      "")))
 
 (defn get-apartment-counts []
   (let [content (html/html-resource (java.net.URL. finn-url))
