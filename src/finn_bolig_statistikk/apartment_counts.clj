@@ -49,6 +49,54 @@
                   "Vinderen"
                   "Østensjø"])
 
+(def db-col-names
+  [:ts
+   :Nye_i_dag
+   :Til_salgs
+   :Solgt_siste_3_dager
+   :Kommer_for_salg
+   :Brukt_bolig
+   :Nybygg
+   :Leilighet
+   :Enebolig
+   :Tomannsbolig
+   :Rekkehus
+   :Prosjekt
+   :Garasje_Parkering
+   :Andre
+   :Aksje
+   :Andel
+   :Eier_Selveier
+   :Megler
+   :Privat
+   :Oslo
+   :Bjerke
+   :Bygdoy_Frogner
+   :Boler
+   :Ekeberg_Bekkelaget
+   :Furuset
+   :Gamle_Oslo
+   :Grefsen_Kjelsas
+   :Grorud
+   :Grunerlokka_Sofienberg
+   :Hellerud
+   :Helsfyr_Sinsen
+   :Lambertseter
+   :Manglerud
+   :Nordstrand
+   :Romsas
+   :Roa
+   :Sagene_Torshov
+   :Sentrum
+   :Sogn
+   :Stovner
+   :StHanshaugen_Ulleval
+   :Sondre_Nordstrand
+   :Ullern
+   :Uranienborg_Majorstuen
+   :Vinderen
+   :Ostensjo])
+
 (defn get-value-from-div-map [divmap]
   (-> divmap
       first
@@ -83,4 +131,4 @@
         result (map #(get-count-for-tag-str all-div-input-toggle %) scrape-tags)
         date-now (.format (java.text.SimpleDateFormat. "yyyy/MM/dd") (new java.util.Date))
         result-with-date (concat [date-now] result)]
-    (println (interpose "," result-with-date))))
+    result-with-date))
