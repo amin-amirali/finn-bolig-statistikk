@@ -50,7 +50,7 @@
                   "Østensjø"])
 
 (def db-col-names
-  [:ts
+  [:dt
    :Nye_i_dag
    :Til_salgs
    :Solgt_siste_3_dager
@@ -123,12 +123,12 @@
   (let [map-content (find-div-with-tag map tag-str)]
     (if (> (count map-content) 0 )
       (get-value-from-div-map map-content)
-      "")))
+      nil)))
 
-(defn get-apartment-counts []
+(defn get-apartment-counts-as-map []
   (let [content (html/html-resource (java.net.URL. finn-url))
         all-div-input-toggle (html/select content [:div.input-toggle])
         result (map #(get-count-for-tag-str all-div-input-toggle %) scrape-tags)
-        date-now (.format (java.text.SimpleDateFormat. "yyyy/MM/dd") (new java.util.Date))
+        date-now (.format (java.text.SimpleDateFormat. "yyyy-MM-dd") (new java.util.Date))
         result-with-date (concat [date-now] result)]
-    result-with-date))
+    (zipmap db-col-names result-with-date)))
