@@ -3,63 +3,65 @@
 Just another Clojure project.
 
 # Initialising the DB
-SQLite is being used as a DB.
-
-Initialise it by creating the db file:
-```bash
-mkdir db
-touch db/database.db
+The app is using mysql. The target table looks like the following:
+```sql
+CREATE TABLE `finn_apartment_counts` (
+    `dt` timestamp NOT NULL,
+    `nye_i_dag` mediumint unsigned DEFAULT NULL,
+    `til_salgs` mediumint unsigned DEFAULT NULL,
+    `solgt_siste_3_dager` mediumint unsigned DEFAULT NULL,
+    `kommer_for_salg` mediumint unsigned DEFAULT NULL,
+    `brukt_bolig` mediumint unsigned DEFAULT NULL,
+    `nybygg` mediumint unsigned DEFAULT NULL,
+    `leilighet` mediumint unsigned DEFAULT NULL,
+    `enebolig` mediumint unsigned DEFAULT NULL,
+    `tomannsbolig` mediumint unsigned DEFAULT NULL,
+    `rekkehus` mediumint unsigned DEFAULT NULL,
+    `prosjekt` mediumint unsigned DEFAULT NULL,
+    `garasje_parkering` mediumint unsigned DEFAULT NULL,
+    `andre` mediumint unsigned DEFAULT NULL,
+    `aksje` mediumint unsigned DEFAULT NULL,
+    `andel` mediumint unsigned DEFAULT NULL,
+    `eier_selveier` mediumint unsigned DEFAULT NULL,
+    `megler` mediumint unsigned DEFAULT NULL,
+    `privat` mediumint unsigned DEFAULT NULL,
+    `oslo` mediumint unsigned DEFAULT NULL,
+    `bjerke` mediumint unsigned DEFAULT NULL,
+    `bygdoy_frogner` mediumint unsigned DEFAULT NULL,
+    `boler` mediumint unsigned DEFAULT NULL,
+    `ekeberg_bekkelaget` mediumint unsigned DEFAULT NULL,
+    `furuset` mediumint unsigned DEFAULT NULL,
+    `gamle_oslo` mediumint unsigned DEFAULT NULL,
+    `grefsen_kjelsas` mediumint unsigned DEFAULT NULL,
+    `grorud` mediumint unsigned DEFAULT NULL,
+    `grunerlokka_sofienberg` mediumint unsigned DEFAULT NULL,
+    `hellerud` mediumint unsigned DEFAULT NULL,
+    `helsfyr_sinsen` mediumint unsigned DEFAULT NULL,
+    `lambertseter` mediumint unsigned DEFAULT NULL,
+    `manglerud` mediumint unsigned DEFAULT NULL,
+    `nordstrand` mediumint unsigned DEFAULT NULL,
+    `romsas` mediumint unsigned DEFAULT NULL,
+    `roa` mediumint unsigned DEFAULT NULL,
+    `sagene_torshov` mediumint unsigned DEFAULT NULL,
+    `sentrum` mediumint unsigned DEFAULT NULL,
+    `sogn` mediumint unsigned DEFAULT NULL,
+    `stovner` mediumint unsigned DEFAULT NULL,
+    `sthanshaugen_ulleval` mediumint unsigned DEFAULT NULL,
+    `sondre_nordstrand` mediumint unsigned DEFAULT NULL,
+    `ullern` mediumint unsigned DEFAULT NULL,
+    `uranienborg_majorstuen` mediumint unsigned DEFAULT NULL,
+    `vinderen` mediumint unsigned DEFAULT NULL,
+    `ostensjo` mediumint unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-Create the table by by starting repl and running:
-```clojure
-(require '[clojure.java.jdbc :refer :all])
-(db-do-commands config/db
-                (create-table-ddl :finn_counts
-                                  [[:ts :datetime :unique]
-                                   [:Nye_i_dag :int]
-                                   [:Til_salgs :int]
-                                   [:Solgt_siste_3_dager :int]
-                                   [:Kommer_for_salg :int]
-                                   [:Brukt_bolig :int]
-                                   [:Nybygg :int]
-                                   [:Leilighet :int]
-                                   [:Enebolig :int]
-                                   [:Tomannsbolig :int]
-                                   [:Rekkehus :int]
-                                   [:Prosjekt :int]
-                                   [:Garasje_Parkering :int]
-                                   [:Andre :int]
-                                   [:Aksje :int]
-                                   [:Andel :int]
-                                   [:Eier_Selveier :int]
-                                   [:Megler :int]
-                                   [:Privat :int]
-                                   [:Oslo :int]
-                                   [:Bjerke :int]
-                                   [:Bygdoy_Frogner :int]
-                                   [:Boler :int]
-                                   [:Ekeberg_Bekkelaget :int]
-                                   [:Furuset :int]
-                                   [:Gamle_Oslo :int]
-                                   [:Grefsen_Kjelsas :int]
-                                   [:Grorud :int]
-                                   [:Grunerlokka_Sofienberg :int]
-                                   [:Hellerud :int]
-                                   [:Helsfyr_Sinsen :int]
-                                   [:Lambertseter :int]
-                                   [:Manglerud :int]
-                                   [:Nordstrand :int]
-                                   [:Romsas :int]
-                                   [:Roa :int]
-                                   [:Sagene_Torshov :int]
-                                   [:Sentrum :int]
-                                   [:Sogn :int]
-                                   [:Stovner :int]
-                                   [:StHanshaugen_Ulleval :int]
-                                   [:Sondre_Nordstrand :int]
-                                   [:Ullern :int]
-                                   [:Uranienborg_Majorstuen :int]
-                                   [:Vinderen :int]
-                                   [:Ostensjo :int]]))
+Be sure to create a resource file, under `resources/config/config.edn`, containing the following:
+```
+{
+ :db-host "your-host"
+ :db-port your-port (likely 3306)
+ :db-username "your-user"
+ :db-password "your-pass"
+ :db-database "your-db"
+ }
 ```
