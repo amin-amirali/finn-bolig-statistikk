@@ -19,7 +19,7 @@
                   "Aksje"
                   "Andel"
                   "Eier (Selveier)"
-                  "Megler"
+                  "Forhandler"
                   "Privat"
                   "Oslo"
                   "Bjerke"
