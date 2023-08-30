@@ -2,4 +2,4 @@ target/*
 .idea/
 .nrepl-port
 *.iml
-resources/config/config.edn
+resources/config/*
